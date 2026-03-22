@@ -26,7 +26,6 @@ import androidx.navigation.NavHostController
 import com.example.workout.data.repository.DataBaseRepository
 import com.example.workout.viewmodel.DayProgress
 import com.example.workout.viewmodel.StreakViewModel
-import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +42,7 @@ fun streakScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text("Progress & Streak", fontWeight = FontWeight.Bold)
                     }
@@ -183,7 +182,10 @@ fun WeeklyProgress(progressList: List<DayProgress>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .background(
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                RoundedCornerShape(16.dp)
+            )
             .padding(16.dp)
     ) {
         Text(

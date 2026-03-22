@@ -4,14 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.workout.navigation.WorkoutApp
-import com.example.workout.ui.screens.WorkoutScreen
-import com.example.workout.ui.screens.streakScreen
 import com.example.workout.service.OutMusicService
 
 class MainActivity : ComponentActivity() {
