@@ -4,7 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +22,9 @@ fun ExerciseCard(
     onStartClick: () -> Unit,
     onStopClick: () -> Unit,
     isRunning: Boolean,
-    timeLeft: Int
+    timeLeft: Int,
+    currentIndex: Int,
+    totalExercises: Int
 ) {
     val progress = if (exercise.time > 0) {
         timeLeft / exercise.time.toFloat()
@@ -40,6 +42,19 @@ fun ExerciseCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+        // Navigation and Counter
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${currentIndex + 1} / $totalExercises",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+
         // Header Section
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -62,7 +77,7 @@ fun ExerciseCard(
         ) {
             // Background Circle
             CircularProgressIndicator(
-                progress = 1f,
+                progress = { 1f },
                 modifier = Modifier.fillMaxSize(),
                 strokeWidth = 12.dp,
                 color = MaterialTheme.colorScheme.surfaceVariant,
@@ -71,7 +86,7 @@ fun ExerciseCard(
             
             // Progress Circle
             CircularProgressIndicator(
-                progress = animatedProgress,
+                progress = { animatedProgress },
                 modifier = Modifier.fillMaxSize(),
                 strokeWidth = 12.dp,
                 color = MaterialTheme.colorScheme.primary,
@@ -106,7 +121,7 @@ fun ExerciseCard(
             )
         ) {
             Icon(
-                imageVector = if (isRunning) Icons.Default.Refresh else Icons.Default.PlayArrow,
+                imageVector = if (isRunning) Icons.Default.Stop else Icons.Default.PlayArrow,
                 contentDescription = if (isRunning) "Stop" else "Start",
                 modifier = Modifier.size(48.dp)
             )

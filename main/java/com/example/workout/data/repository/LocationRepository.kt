@@ -1,12 +1,11 @@
 package com.example.workout.data.repository
 
 import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
+import android.location.Location
 import androidx.annotation.RequiresPermission
-import androidx.core.content.ContextCompat
+import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.tasks.await
 
 class LocationRepository(private val fusedLocationClient: FusedLocationProviderClient) {
@@ -14,11 +13,17 @@ class LocationRepository(private val fusedLocationClient: FusedLocationProviderC
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     suspend fun getNetworkLocation(): Pair<Double, Double>? {
         return try {
-            val location = fusedLocationClient.lastLocation.await()
-            location?.latitude?.let { lat ->
-                location.longitude?.let { lon ->
-                    lat to lon
-                }
+            var location: Location? = fusedLocationClient.lastLocation.await()
+            
+            if (location == null) {
+                val request = CurrentLocationRequest.Builder()
+                    .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+                    .build()
+                location = fusedLocationClient.getCurrentLocation(request, null).await()
+            }
+
+            location?.let {
+                it.latitude to it.longitude
             }
         } catch (e: Exception) {
             null
